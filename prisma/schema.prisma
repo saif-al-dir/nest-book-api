@@ -6,10 +6,29 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Author {
+  id      String  @id @default(uuid())
+  name    String  @unique
+  country String
+  books   Book[]  // one-to-many relationship
+}
+
+model Book {
+  id        String   @id @default(uuid())
+  title     String   @unique
+  rating    Int
+  price     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relation with Author
+  authorId String
+  author   Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
