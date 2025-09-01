@@ -20,4 +20,15 @@ export class AuthService {
     // Create user with UsersService
     return this.usersService.create(userData, hashedPassword);
   }
+
+  // For login (used by LocalStrategy)
+  public async validateUser(email: string, password: string) {
+    const user = await this.usersService.getByEmail(email);
+
+    if (user && user.password && (await bcrypt.compare(password, user.password.hashedPassword))) {
+      const { password, ...result } = user; // remove password
+      return result;
+    }
+    return null;
+  }
 }
