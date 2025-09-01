@@ -1,18 +1,21 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+// import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
+import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   // enable validation globally
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  // app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   // add global prefix for all endpoints
-  app.setGlobalPrefix('api');
+  // app.setGlobalPrefix('api');
 
   // handle proper shutdown (for Prisma)
-  await app.enableShutdownHooks();
+  // await app.enableShutdownHooks();
+
+  app.use(cookieParser());
 
   // start server
   await app.listen(3000);
