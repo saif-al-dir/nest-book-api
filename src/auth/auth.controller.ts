@@ -1,5 +1,5 @@
 // src/auth/auth.controller.ts
-import { Body, Controller, Post, UseGuards, Request, Response } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards, Request, Response, Delete } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDTO } from './dto/register.dto';
 import { LocalAuthGuard } from './local-auth.guard';
@@ -20,11 +20,18 @@ export class AuthController {
   @Post('login')
   async login(@Request() req, @Response() res: express.Response) {
     const tokens = await this.authService.createSession(req.user);
-    res.cookie('auth', tokens.access_token, {
+    res.cookie('auth', tokens, {
       httpOnly: true,
       sameSite: 'lax', // allow Postman
     });
     return res.json({ message: 'success' });
+  }
+
+  @UseGuards(LocalAuthGuard)
+  @Delete('logout')
+  async logout(@Response() res: express.Response) {
+    res.clearCookie('auth', {httpOnly: true});
+    return res.send({message: 'success'});
   }
 }
 

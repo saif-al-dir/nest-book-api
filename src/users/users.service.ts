@@ -4,6 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -35,11 +36,12 @@ export class UsersService {
     });
   }
 
-  async create(userData: { email: string }, password: string) {
+  async create(userData: { email: string; role: Role }, password: string) {
     try {
       return await this.prisma.user.create({
         data: {
-          ...userData,
+          email: userData.email,
+          role: userData.role,
           password: {
             create: { hashedPassword: password },
           },
