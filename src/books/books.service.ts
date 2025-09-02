@@ -75,4 +75,25 @@ export class BooksService {
       where: { id },
     });
   }
+
+async likeBook(bookId: string, userId: string) {
+    try {
+      return await this.prisma.book.update({
+        where: { id: bookId },
+        data: {
+          users: {
+            create: {
+              user: {
+                connect: { id: userId },
+              },
+            },
+          },
+        },
+        include: { users: true },
+      });
+    } catch (error) {
+      throw new NotFoundException('Book or User not found');
+    }
+  }
+
 }

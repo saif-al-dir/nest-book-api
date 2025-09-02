@@ -31,6 +31,17 @@ model Book {
   // Relation with Author
   authorId String
   author   Author @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  users     UserOnBooks[]
+}
+
+model UserOnBooks {
+  book   Book @relation(fields: [bookId], references: [id])
+  bookId String
+  user   User @relation(fields: [userId], references: [id])
+  userId String
+
+  @@id([bookId, userId]) // composite primary key
 }
 
 enum Role {
@@ -43,6 +54,8 @@ model User {
   email    String    @unique
   role     Role      @default(USER)
   password Password?
+
+  books    UserOnBooks[]
 }
 
 model Password {

@@ -12,12 +12,14 @@ export class UsersService {
 
   async getAll() {
     return this.prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        role: true,
+    include: {
+      books: {
+        include: {
+          book: true,
+        },
       },
-    });
+    },
+  });
   }
 
   async getById(id: string) {

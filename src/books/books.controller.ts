@@ -3,6 +3,7 @@ import { BooksService } from './books.service';
 import { CreateBookDTO } from './dto/create-book.dto';
 import { UpdateBookDTO } from './dto/update-book.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { LikeBookDto } from './dto/like-book.dto';
 
 @Controller('books')
 export class BooksController {
@@ -42,6 +43,12 @@ export class BooksController {
   @UseGuards(JwtAuthGuard)
   deleteById(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.booksService.deleteById(id);
+  }
+
+  @Post('like')
+  @UseGuards(JwtAuthGuard) // Only logged-in users
+  async likeBook(@Body() likeBookDto: LikeBookDto) {
+    return this.booksService.likeBook(likeBookDto.bookId, likeBookDto.userId);
   }
 }
 
