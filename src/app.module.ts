@@ -11,9 +11,11 @@ import { BooksModule } from './books/books.module';
 import { AuthorsModule } from './authors/authors.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
+import { OrdersModule } from './orders/orders.module';
 
 @Module({
-  imports: [BooksModule, AuthorsModule, UsersModule, AuthModule],
+  imports: [BooksModule, AuthorsModule, UsersModule, AuthModule, ProductsModule, OrdersModule],
   controllers: [AppController],
   providers: [AppService],
 })
